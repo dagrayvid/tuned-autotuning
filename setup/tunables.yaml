@@ -1,0 +1,176 @@
+application_name: "postgres"
+tunables:
+- lower_bound: 26624
+  name: net.core.rmem_default
+  set_values:
+  - name: default
+    value: 212992
+  - name: mssql
+    value: 262144
+  step: 512
+  upper_bound: 1048576
+  value_type: int
+- lower_bound: 26624
+  name: net.core.rmem_max
+  set_values:
+  - name: default
+    value: 212992
+  - name: mssql
+    value: 4194304
+  step: 512
+  upper_bound: 8388608
+  value_type: int
+- lower_bound: 26624
+  name: net.core.wmem_default
+  set_values:
+  - name: default
+    value: 212992
+  - name: mssql
+    value: 262144
+  step: 512
+  upper_bound: 1048576
+  value_type: int
+- lower_bound: 26624
+  name: net.core.wmem_max
+  set_values:
+  - name: default
+    value: 212992
+  - name: mssql
+    value: 1048576
+  step: 512
+  upper_bound: 4194304
+  value_type: int
+- lower_bound: 131072
+  name: fs.aio-max-nr
+  set_values:
+  - name: default
+    value: 1048576
+  step: 512
+  upper_bound: 2097152
+  value_type: int
+- lower_bound: 2048
+  name: kernel.shmmni
+  set_values:
+  - name: default
+    value: 4096
+  step: 2048
+  upper_bound: 16384
+  value_type: int
+- lower_bound: 0
+  name: vm.dirty_ratio
+  set_values:
+  - name: default
+    value: 30
+  - name: throughput-performance
+    value: 40
+  - name: mssql
+    value: 80
+  step: 1
+  upper_bound: 100
+  value_type: int
+- lower_bound: 0
+  name: vm.dirty_background_ratio
+  set_values:
+  - name: default
+    value: 10
+  - name: throughput-performance
+    value: 10
+  - name: mssql
+    value: 3
+  step: 1
+  upper_bound: 100
+  value_type: int
+- lower_bound: 50
+  name: vm.dirty_expire_centisecs
+  set_values:
+  - name: default
+    value: 3000
+  - name: mssql
+    value: 500
+  step: 50
+  upper_bound: 10000
+  value_type: int
+- lower_bound: 10
+  name: vm.dirty_writeback_centisecs
+  set_values:
+  - name: default
+    value: 500
+  - name: mssql
+    value: 100
+  step: 5
+  upper_bound: 2000
+  value_type: int
+- lower_bound: 0
+  name: vm.swappiness
+  set_values:
+  - name: default
+    value: 30
+  - name: throughput-performance
+    value: 10
+  - name: mssql
+    value: 1
+  - name: oracle
+    value: 10
+  - name: postgresql
+    value: 3
+  step: 1
+  upper_bound: 100
+  value_type: int
+- lower_bound: 65536
+  name: vm.max_map_count
+  set_values:
+  - name: default
+    value: 262144
+  - name: mssql
+    value: 1600000
+  step: 512
+  upper_bound: 4194304
+  value_type: int
+- lower_bound: 5000000
+  name: sched_latency_ns
+  set_values:
+  - name: default
+    value: 24000000
+  - name: mssql
+    value: 60000000
+  step: 50000
+  upper_bound: 200000000
+  value_type: int
+- lower_bound: 50000
+  name: sched_migration_cost_ns
+  set_values:
+  - name: default
+    value: 500000
+  - name: mssql
+    value: 500000
+  - name: postgresql
+    value: 50000000
+  step: 50000
+  upper_bound: 100000000
+  value_type: int
+- lower_bound: 1000000
+  name: sched_min_granularity_ns
+  set_values:
+  - name: default
+    value: 10000000
+  - name: throughput-performance
+    value: 10000000
+  - name: mssql
+    value: 15000000
+  - name: postgresql
+    value: 10000000
+  step: 50000
+  upper_bound: 50000000
+  value_type: int
+- lower_bound: 1000000
+  name: sched_wakeup_granularity_ns
+  set_values:
+  - name: default
+    value: 15000000
+  - name: throughput-performance
+    value: 15000000
+  - name: mssql
+    value: 2000000
+  step: 50000
+  upper_bound: 50000000
+  value_type: int

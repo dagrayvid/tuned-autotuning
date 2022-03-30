@@ -1,0 +1,17 @@
+tuned section,tunable,value_type,lower_bound,upper_bound,step,default,throughput-performance,mssql,oracle,postgresql
+sysctl,net.core.rmem_default,int,26624,1048576,512,212992,,262144,,
+sysctl,net.core.rmem_max,int,26624,8388608,512,212992,,4194304,,
+sysctl,net.core.wmem_default,int,26624,1048576,512,212992,,262144,,
+sysctl,net.core.wmem_max,int,26624,4194304,512,212992,,1048576,,
+sysctl,fs.aio-max-nr,int,131072,2097152,512,1048576,,,,
+sysctl,kernel.shmmni,int,2048,16384,2048,4096,,,,
+sysctl,vm.dirty_ratio,int,0,100,1,30,40,80,,
+sysctl,vm.dirty_background_ratio,int,0,100,1,10,10,3,,
+sysctl,vm.dirty_expire_centisecs,int,50,10000,50,3000,,500,,
+sysctl,vm.dirty_writeback_centisecs,int,10,2000,5,500,,100,,
+sysctl,vm.swappiness,int,0,100,1,30,10,1,10,3
+sysctl,vm.max_map_count,int,65536,4194304,512,262144,,1600000,,
+sysctl,sched_latency_ns,int,5000000,200000000,50000,24000000,,60000000,,
+sysctl,sched_migration_cost_ns,int,50000,100000000,50000,500000,,500000,,50000000
+sysctl,sched_min_granularity_ns,int,1000000,50000000,50000,10000000,10000000,15000000,,10000000
+sysctl,sched_wakeup_granularity_ns,int,1000000,50000000,50000,15000000,15000000,2000000,,

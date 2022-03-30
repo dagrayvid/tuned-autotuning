@@ -1,0 +1,38 @@
+apiVersion: tuned.openshift.io/v1
+kind: Tuned
+metadata:
+  name: openshift-hammerdb
+  namespace: openshift-cluster-node-tuning-operator
+spec:
+  profile:
+  - data: |
+      [main]
+      summary=Experimental tuning for autotune experiment
+      
+      [sysctl]
+      net.core.rmem_default={{ tunables["net.core.rmem_default"] }}
+      net.core.rmem_max={{ tunables["net.core.rmem_max"] }} 
+      net.core.wmem_default={{ tunables["net.core.wmem_default"] }}
+      net.core.wmem_max={{ tunables["net.core.wmem_max"] }}
+      fs.aio-max-nr={{ tunables["fs.aio-max-nr"] }}
+      kernel.shmmni={{ tunables["kernel.shmmni"] }}
+      vm.dirty_ratio={{ tunables["vm.dirty_ratio"] }}
+      vm.dirty_background_ratio={{ tunables["vm.dirty_background_ratio"] }}
+      vm.dirty_expire_centisecs={{ tunables["vm.dirty_expire_centisecs"] }}
+      vm.dirty_writeback_centisecs={{ tunables["vm.dirty_writeback_centisecs"] }}
+      vm.swappiness={{ tunables["vm.swappiness"] }}
+      vm.max_map_count={{ tunables["vm.max_map_count"] }}
+
+      [scheduler]
+      sched_latency_ns={{ tunables["sched_latency_ns"] }}
+      sched_migration_cost_ns={{ tunables["sched_migration_cost_ns"] }}
+      sched_min_granularity_ns={{ tunables["sched_min_granularity_ns"] }}
+      sched_wakeup_granularity_ns={{ tunables["sched_wakeup_granularity_ns"] }}
+
+    name: openshift-hammerdb
+  recommend:
+  - match:
+    - label: hammerdb-sut
+      value: database
+    priority: 5
+    profile: openshift-hammerdb

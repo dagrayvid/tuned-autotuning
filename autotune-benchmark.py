@@ -1,4 +1,5 @@
 import sys, os, subprocess
+import argparse
 import statistics
 import optuna
 import yaml
@@ -38,16 +39,15 @@ def get_fixed_trials(tunables):
 
     return fixed_trials
 
-def run_hammerdb_with_tunables(tunables, output_dir):
+def run_benchmark_with_tunables(benchmark_script, tunables, output_dir):
     tuned_yaml="{}/tuned.yaml".format(output_dir)
     # Create tuned profile
     template_from_tunable_dict(tunables, "tuned.yaml.j2", tuned_yaml)
     
-    # run hammerdb and get result
-    # call bash script passing in tuned.yaml filename
-    process_result = subprocess.run(["bash", "benchmark-scripts/run_hammerdb_with_profile.sh", tuned_yaml, output_dir], stdout=subprocess.PIPE)
+    # Call benchmark shell script, with created Tuned YAML file and expected output file as args.
+    process_result = subprocess.run(["bash", benchmark_script, tuned_yaml, output_dir], stdout=subprocess.PIPE)
     if process_result.returncode != 0:
-        print("ERROR in experiment, will be pruned")
+        print("ERROR in benchmark, will be pruned")
         return "Nan", "prune"
     else:
         # Save script logs to a logfile
@@ -57,7 +57,7 @@ def run_hammerdb_with_tunables(tunables, output_dir):
         
         # read from output from script itself
         benchmark_result=""
-        with open("{}/benchmark-result.csv".format(output_dir)) as f:
+        with open("{}/result.csv".format(output_dir)) as f:
             benchmark_result = f.readline()
 
         results = [float(result) for result in benchmark_result.split(',')]
@@ -75,12 +75,13 @@ class Objective(object):
         tunables (list): A list containing the details of each tunable in a dictionary format.
     """
 
-    def __init__(self, tunables, output_dir):
+    def __init__(self, tunables, benchmark_script, output_dir):
         self.tunables = tunables
+        self.benchmark_script = benchmark_script
         self.output_dir = output_dir
     
     def __call__(self, trial):
-        experiment_tunables = {}
+        study_tunables = {}
          # Define search space
         for tunable in self.tunables:
             if tunable["value_type"].lower() == "float":
@@ -94,38 +95,52 @@ class Objective(object):
             elif tunable["value_type"].lower() == "categorical":
                 tunable_value = trial.suggest_categorical(tunable["name"], tunable["choices"])
 
-            experiment_tunables[tunable["name"]] = tunable_value
+            study_tunables[tunable["name"]] = tunable_value
 
         timestamp = datetime.now().strftime("%y%m%d%H%M%S")
         trial_output_dir = "{}/trial-{}-{}".format(self.output_dir, trial.number, timestamp)
         pathlib.Path(trial_output_dir).mkdir(parents=True, exist_ok=True) 
-        result, status = run_hammerdb_with_tunables(experiment_tunables, trial_output_dir)
+        result, status = run_benchmark_with_tunables(self.benchmark_script, study_tunables, trial_output_dir)
 
         if status == "prune":
             raise optuna.TrialPruned()
         
         return result
 
+def get_args(study_name):
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output-dir', type=str, default="results/{}".format(study_name), help="Output dir for all experiment results and logs. Default is results/study-<timestamp>. Will be created if it does not exist.")
+    parser.add_argument('--tunables', type=str, default="setup/tunables.yaml", help="File name of tunables configuration file. See setup/tunables.yaml")
+    parser.add_argument('--direction', type=str, required=True, help="Direction for objective function optimization. Must be minimize or maximize")
+    parser.add_argument('--iterations', type=int, default=100, help="Number of trials to run.")
+    parser.add_argument('--fixed-trials', action='store_true', help="A set of fixed trials / defaults may be set in the tunables YAML file (defined by --tunables), to be used as initial values for the optimizer to try if --fixed-trials is set.")
+    parser.add_argument('--no-fixed-trials', action='store_false', help="Disable the fixed trials (this is the default.)")
+    parser.set_defaults(fixed_trials=False)
+    parser.add_argument('--benchmark-script', default="benchmark-scripts/run_hammerdb_with_profile.sh", help="Bash script that runs benchmark. Expected to apply the Tuned YAML file supplied by $1, and output a single line of comma separated results from the  trials to the file in $2/result.csv.")
+
+    return parser.parse_args()
+
+
 timestamp = datetime.now().strftime("%y%m%d%H%M")
-#TODO make this a command line option with default
-run_output_path="results/experiment-{}".format(timestamp)
-pathlib.Path(run_output_path).mkdir(parents=True, exist_ok=True) 
+study_name="study-{}".format(timestamp)
+args = get_args(study_name)
 
-#TODO make this a command line option with default
-tunables_conf_file = "setup/tunables.yaml"
-tunables_list = get_all_tunables(tunables_conf_file)
-fixed_trials = get_fixed_trials(tunables_list)
+output_dir=args.output_dir
+pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True) 
 
-#TODO make direction a command line option
-study = optuna.create_study(direction="minimize")
+tunables_list = get_all_tunables(args.tunables)
+fixed_trial_tunables = get_fixed_trials(tunables_list)
+
+storage_name = "sqlite:///{}/{}.db".format(output_dir, study_name) # create a persistent sqlite DB saved in the output_dir for this study.
+study = optuna.create_study(study_name=study_name, direction=args.direction, sampler=optuna.samplers.TPESampler(n_startup_trials=8), storage=storage_name)
 
 # Fixed trials for any defaults or suggestions found in tunables_list
-#TODO make this a command line option
-for known_config in fixed_trials.keys():
-    print("SKIPPING FIXED TRIAL  {}".format(known_config))
-    print(fixed_trials[known_config])
-    #study.enqueue_trial(fixed_trials[known_config])
+if args.fixed_trials:
+    print("Queuing fixed trials:")
+    for known_config in fixed_trial_tunables.keys():
+        print(fixed_trial_tunables[known_config])
+        study.enqueue_trial(fixed_trial_tunables[known_config])
 
-study.optimize(Objective(tunables_list, run_output_path), n_trials=100)
+study.optimize(Objective(tunables_list, args.benchmark_script, output_dir), n_trials=args.iterations)
 
 study.best_params

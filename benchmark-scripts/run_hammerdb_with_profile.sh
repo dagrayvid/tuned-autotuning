@@ -97,5 +97,5 @@ benchmark_pod=$(oc get pods -n benchmark-operator | grep "hammerdb-benchmark-wor
 oc logs -n benchmark-operator pod/$benchmark_pod >> $results_dir/$timestamp-hammerdb.log
 
 # Send result to stdout as a comma separated list of the NOPM numbers
-oc logs -n benchmark-operator pod/$benchmark_pod | grep "NOPM:" | awk '{print $2}' | paste -sd, | tee $results_dir/benchmark-result.csv
+oc logs -n benchmark-operator pod/$benchmark_pod | grep "NOPM:" | awk '{print $2}' | paste -sd, | tee $results_dir/result.csv
 

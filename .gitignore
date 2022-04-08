@@ -1,5 +1,6 @@
 # Experiment results
 /results
+benchmark-scripts/yaml/secret.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

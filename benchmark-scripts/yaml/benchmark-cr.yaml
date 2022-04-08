@@ -12,14 +12,15 @@ spec:
   workload:
     name: hammerdb
     args:
-      image: quay.io/dagray/hammerdb:latest # add custom hammerdb image
+      image: quay.io/dagray/hammerdb:hammerdb-logs # add custom hammerdb image
       pin: true # true for nodeSelector
-      pin_node: "ip-10-0-168-44.ec2.internal"
+      pin_node: "master-2"
       resources: true # true for resources requests/limits
       requests_cpu: 10m
       requests_memory: 10Mi
-      limits_cpu: 14
-      limits_memory: 64Gi
+      limits_cpu: 60
+      limits_memory: 128Gi
+      job_timeout: 40000 # default is 1 hr , let's try 3
       db_type: "pg"
       timed_test: true
       test_type: "tpc-c"
@@ -27,12 +28,12 @@ spec:
       db_benchmark: true
       db_server: "postgres-deployment.postgres-db"
       db_port: "5432"
-      db_warehouses: 500
-      db_num_workers: 128
+      db_warehouses: 2048
+      db_num_workers: 512
       db_user: "postgres"
       db_pass: "postgres"
       db_name: "tpcc"
-      transactions: 200000
+      transactions: 250000
       raiseerror: "false"
       keyandthink: "false"
       driver: "timed"
@@ -44,7 +45,7 @@ spec:
       async_client: 10
       async_verbose: false
       async_delay: 1000
-      samples: 4
+      samples: 6
       scaleup_workers: "false"
       # database specific variables
       # mssql:

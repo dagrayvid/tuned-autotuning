@@ -9,7 +9,7 @@ spec:
   containers:
   - name: db-reset
     image: registry.redhat.io/ubi8/ubi:latest
-    command: ["/bin/bash", "-c", "rm -rf /var/lib/pgsql/data/userdata && cp -a /var/lib/pgsql-save/data/userdata /var/lib/pgsql/data/userdata"]
+    command: ["/bin/bash", "-c", "rm -rf /var/lib/pgsql/data/userdata && cp -a /var/lib/pgsql/data/userdata-save /var/lib/pgsql/data/userdata"]
     volumeMounts:
     - name: postgres-persistent-storage
       mountPath: /var/lib/pgsql/data

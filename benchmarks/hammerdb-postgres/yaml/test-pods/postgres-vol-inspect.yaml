@@ -1,27 +1,21 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: db-backup
+  name: db-vol-inspect
   namespace: postgres-db
 spec:
   nodeSelector:
     hammerdb-sut: "database"
   containers:
-  - name: db-backup
+  - name: db-vol-inspect
     image: registry.redhat.io/ubi8/ubi:latest
-    command: ["/bin/bash", "-c", "rm -rf /var/lib/pgsql-save/data/userdata || true; cp -a /var/lib/pgsql/data/userdata /var/lib/pgsql-save/data/userdata"]
+    command: ["/bin/bash", "-c", "sleep infinity"]
     volumeMounts:
     - name: postgres-persistent-storage
       mountPath: /var/lib/pgsql/data
-      readOnly: false
-    - name: postgres-save-initialized-state
-      mountPath: /var/lib/pgsql-save/data
       readOnly: false
   restartPolicy: Never
   volumes:
   - name: postgres-persistent-storage
     persistentVolumeClaim:
       claimName: postgres-persistent-storage
-  - name: postgres-save-initialized-state
-    persistentVolumeClaim:
-      claimName: postgres-save-initialized-state

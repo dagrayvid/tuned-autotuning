@@ -1,0 +1,33 @@
+apiVersion: "local.storage.openshift.io/v1"
+kind: "LocalVolume"
+metadata:
+  name: "hammerdb-logs"
+  namespace: "openshift-local-storage" 
+spec:
+  nodeSelector: 
+    nodeSelectorTerms:
+    - matchExpressions:
+        - key: hammerdb-sut
+          operator: In
+          values:
+          - "client"
+  storageClassDevices:
+    - storageClassName: "hammerdb-logs" 
+      volumeMode: Filesystem 
+      fsType: xfs 
+      devicePaths: 
+        - /dev/sdc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+    name: hammerdb-logs-pvc
+    namespace: benchmark-operator
+spec:
+    storageClassName: hammerdb-logs
+    accessModes:
+      - ReadWriteOnce
+    volumeMode: Filesystem
+    resources:
+      requests:
+        storage: 256Gi

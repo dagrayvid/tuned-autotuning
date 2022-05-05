@@ -5,10 +5,10 @@ set -eu
 # This script assumes you have labeled the system under test with the node label hammerdb-sut=database
 # and that you have set the pin node settings in the files ./yaml/benchmark-setup.yaml and ./yaml/benchmark-cr.yaml
 
-volumes_yaml="benchmark-scripts/yaml/postgres-volumes.yaml"
-database_yaml="benchmark-scripts/yaml/postgres-db.yaml"
-db_build_yaml="benchmark-scripts/yaml/benchmark-setup.yaml"
-postgres_backup_yaml="benchmark-scripts/yaml/postgres-backup.yaml"
+volumes_yaml="benchmarks/hammerdb-postgres/yaml/postgres-volumes.yaml"
+database_yaml="benchmarks/hammerdb-postgres/yaml/postgres-db.yaml"
+db_build_yaml="benchmarks/hammerdb-postgres/yaml/benchmark-setup.yaml"
+postgres_backup_yaml="benchmarks/hammerdb-postgres/yaml/postgres-backup.yaml"
 poll_interval=10
 
 

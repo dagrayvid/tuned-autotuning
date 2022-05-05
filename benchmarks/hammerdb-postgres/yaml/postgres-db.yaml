@@ -31,6 +31,8 @@ spec:
         hammerdb-sut: "database"
       #serviceAccount: postgres-sa
       terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: docker-token
       containers:
       - name: postgres
         #command: ["run-postgresql", "-cshared_buffers=24GB"]
@@ -40,11 +42,11 @@ spec:
           - containerPort: 5432
         resources:
           requests:
-            cpu: 14
-            memory: 48Gi 
+            cpu: 60
+            memory: 160Gi 
           limits:
-            cpu: 14
-            memory: 48Gi 
+            cpu: 60
+            memory: 160Gi
         env:
         - name: POSTGRESQL_USER
           value: "test"
@@ -55,7 +57,7 @@ spec:
         - name: POSTGRESQL_ADMIN_PASSWORD
           value: "postgres"
         - name: POSTGRESQL_MAX_CONNECTIONS
-          value: "200"
+          value: "1200"
         #- name: POSTGRESQL_SHARED_BUFFERS
         #  value: "12GB"
         #- name: POSTGRESQL_EFFECTIVE_CACHE_SIZE

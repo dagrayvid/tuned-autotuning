@@ -1,0 +1,26 @@
+application_name: "postgres"
+tunables:
+- lower_bound: 50000
+  name: net.ipv4.tcp_wmem_max
+  set_values:
+  - name: default
+    value: 4180000
+  step: 50000
+  upper_bound: 8000000
+  value_type: int
+- lower_bound: 100000
+  name: net.ipv4.tcp_rmem_max
+  set_values:
+  - name: default
+    value: 6291456
+  step: 100000
+  upper_bound: 10000000
+  value_type: int
+  #- lower_bound: 512
+  #  name: net.ipv4.tcp_wmem
+  #  set_values:
+  #  - name: default
+  #    value: "4096	16384	4194304"
+  #  step: 512
+  #  upper_bound: 4194304
+  #  value_type: int_min_pressure_max

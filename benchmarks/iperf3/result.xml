@@ -1,0 +1,100 @@
+
+
+Phoronix Test Suite v10.8.2
+System Information
+
+
+  PROCESSOR:              Intel Core i7-10850H @ 5.10GHz
+    Core Count:           32                                                  
+    Thread Count:         64                                                  
+    Extensions:           SSE 4.2 + AVX512CD + AVX2 + AVX + RDRAND + FSGSBASE 
+    Cache Size:           22 MB                                               
+    Microcode:            0x2006b06                                           
+    Core Family:          Comet Lake                                          
+    Scaling Driver:       intel_pstate performance                            
+
+  GRAPHICS:               i915drmfb
+    Screen:               1024x768         
+
+  MOTHERBOARD:            LENOVO 20TJS2F45T
+    BIOS Version:         N2VET32W 1.17    
+    Audio:                Realtek ALC285   
+
+  MEMORY:                 32GB
+
+  DISK:                   512GB Toshiba KXG6AZNV512G
+    File-System:          overlayfs        
+    Disk Scheduler:       NONE             
+
+  OPERATING SYSTEM:       Red Hat Enterprise Linux 8.5
+    Kernel:               5.16.18-200.fc35.x86_64 (x86_64)                                                                            
+    Compiler:             GCC 8.5.0 20210514                                                                                          
+    System Layer:         container-other                                                                                             
+    Security:             itlb_multihit: KVM: Mitigation of Split huge pages                                                          
+                          + l1tf: Mitigation of PTE Inversion; VMX: conditional cache flushes SMT vulnerable                          
+                          + mds: Mitigation of Clear buffers; SMT vulnerable                                                          
+                          + meltdown: Mitigation of PTI                                                                               
+                          + spec_store_bypass: Mitigation of SSB disabled via prctl and seccomp                                       
+                          + spectre_v1: Mitigation of usercopy/swapgs barriers and __user pointer sanitization                        
+                          + spectre_v2: Mitigation of Full generic retpoline IBPB: conditional IBRS_FW STIBP: conditional RSB filling 
+                          + srbds: Not affected                                                                                       
+                          + tsx_async_abort: Mitigation of Clear buffers; SMT vulnerable                                              
+
+
+iPerf 3.7:
+    pts/iperf-1.1.1 [Server Address: localhost - Server Port: 5201 - Duration: 10 Seconds - Test: TCP - Parallel: 1]
+    Test 1 of 1
+    Estimated Trial Run Count:    3                     
+    Estimated Time To Completion: 2 Minutes [19:53 UTC] 
+    Test will timeout after ~4 minutes if any individual run incomplete/hung.
+        Started Run 1 @ 19:52:54
+        Started Run 2 @ 19:53:12
+        Started Run 3 @ 19:53:29
+
+    Server Address: localhost - Server Port: 5201 - Duration: 10 Seconds - Test: TCP - Parallel: 1:
+        28319
+        28329
+        28173
+
+    Average: 28274 Mbits/sec
+    Deviation: 0.31%
+
+
+<?xml version="1.0"?>
+<!--Phoronix Test Suite v10.8.2-->
+<PhoronixTestSuite>
+  <Generated>
+    <Title>2022-04-14-1952</Title>
+    <LastModified>2022-04-14 19:53:44</LastModified>
+    <TestClient>Phoronix Test Suite v10.8.2</TestClient>
+    <Description>container-other testing on Red Hat Enterprise Linux 8.5 via the Phoronix Test Suite.</Description>
+  </Generated>
+  <System>
+    <Identifier>2022-04-14 19:52</Identifier>
+    <Hardware>Processor: Intel Core i7-10850H @ 5.10GHz (6 Cores / 12 Threads), Motherboard: LENOVO 20TJS2F45T (N2VET32W 1.17 BIOS), Memory: 32GB, Disk: 512GB Toshiba KXG6AZNV512G, Graphics: i915drmfb, Audio: Realtek ALC285</Hardware>
+    <Software>OS: Red Hat Enterprise Linux 8.5, Kernel: 5.16.18-200.fc35.x86_64 (x86_64), Compiler: GCC 8.5.0 20210514, File-System: overlayfs, Screen Resolution: 1024x768, System Layer: container-other</Software>
+    <User></User>
+    <TimeStamp>2022-04-14 19:52:52</TimeStamp>
+    <TestClientVersion>10.8.2</TestClientVersion>
+    <Notes></Notes>
+    <JSON>{"compiler-configuration":"--build=x86_64-redhat-linux --disable-libmpx --disable-libunwind-exceptions --enable-__cxa_atexit --enable-bootstrap --enable-cet --enable-checking=release --enable-gnu-indirect-function --enable-gnu-unique-object --enable-initfini-array --enable-languages=c,c++,fortran,lto --enable-multilib --enable-offload-targets=nvptx-none --enable-plugin --enable-shared --enable-threads=posix --mandir=\/usr\/share\/man --with-arch_32=x86-64 --with-gcc-major-version-only --with-isl --with-linker-hash-style=gnu --with-tune=generic --without-cuda-driver","cpu-scaling-governor":"intel_pstate performance","cpu-microcode":"0x2006b06","kernel-extra-details":"Transparent Huge Pages: always","security":"itlb_multihit: KVM: Mitigation of Split huge pages + l1tf: Mitigation of PTE Inversion; VMX: conditional cache flushes SMT vulnerable + mds: Mitigation of Clear buffers; SMT vulnerable + meltdown: Mitigation of PTI + spec_store_bypass: Mitigation of SSB disabled via prctl and seccomp + spectre_v1: Mitigation of usercopy\/swapgs barriers and __user pointer sanitization + spectre_v2: Mitigation of Full generic retpoline IBPB: conditional IBRS_FW STIBP: conditional RSB filling + srbds: Not affected + tsx_async_abort: Mitigation of Clear buffers; SMT vulnerable"}</JSON>
+  </System>
+  <Result>
+    <Identifier>pts/iperf-1.1.1</Identifier>
+    <Title>iPerf</Title>
+    <AppVersion>3.7</AppVersion>
+    <Arguments>-c localhost -p 5201 -t 10  -P 1</Arguments>
+    <Description>Server Address: localhost - Server Port: 5201 - Duration: 10 Seconds - Test: TCP - Parallel: 1</Description>
+    <Scale>Mbits/sec</Scale>
+    <Proportion>HIB</Proportion>
+    <DisplayFormat>BAR_GRAPH</DisplayFormat>
+    <Data>
+      <Entry>
+        <Identifier>2022-04-14 19:52</Identifier>
+        <Value>28274</Value>
+        <RawString>28319:28329:28173</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O3 -march=native -lssl -lcrypto -lm"},"test-run-times":"14.35:13.17:13.19"}</JSON>
+      </Entry>
+    </Data>
+  </Result>
+</PhoronixTestSuite>

@@ -10,8 +10,8 @@ spec:
       summary=Experimental tuning for autotune experiment
       
       [sysctl]
-      net.ipv4.tcp_rmem="4096  87380  {{ tunables["net.ipv4.tcp_rmem_max"] }}"
-      net.ipv4.tcp_wmem="4096  16384  {{ tunables["net.ipv4.tcp_wmem_max"] }}"
+      net.ipv4.tcp_rmem={{ tunables["net.ipv4.tcp_rmem"] }}
+      net.ipv4.tcp_wmem={{ tunables["net.ipv4.tcp_wmem"] }}
 
     name: iperf3
   recommend:

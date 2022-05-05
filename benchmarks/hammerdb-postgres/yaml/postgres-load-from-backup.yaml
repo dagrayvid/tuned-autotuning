@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db-reset
+  namespace: postgres-db
+spec:
+  nodeSelector:
+    hammerdb-sut: "database"
+  containers:
+  - name: db-reset
+    image: registry.redhat.io/ubi8/ubi:latest
+    command: ["/bin/bash", "-c", "rm -rf /var/lib/pgsql/data/userdata && cp -a /var/lib/pgsql/data/userdata-save /var/lib/pgsql/data/userdata"]
+    volumeMounts:
+    - name: postgres-persistent-storage
+      mountPath: /var/lib/pgsql/data
+      readOnly: false
+  restartPolicy: Never
+  volumes:
+  - name: postgres-persistent-storage
+    persistentVolumeClaim:
+      claimName: postgres-persistent-storage

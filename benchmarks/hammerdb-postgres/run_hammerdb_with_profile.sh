@@ -4,9 +4,9 @@ set -eu
 
 profile_yaml=$1
 results_dir=$2
-database_yaml="benchmark-scripts/yaml/postgres-db.yaml"
-benchmark_yaml="benchmark-scripts/yaml/benchmark-cr.yaml"
-postgres_load_from_backup="benchmark-scripts/yaml/postgres-load-from-backup.yaml"
+database_yaml="benchmarks/hammerdb-postgres/yaml/postgres-db.yaml"
+benchmark_yaml="benchmarks/hammerdb-postgres/yaml/benchmark-cr.yaml"
+postgres_load_from_backup="benchmarks/hammerdb-postgres/yaml/postgres-load-from-backup.yaml"
 timestamp=$(date +%y%m%d%H%M%S)
 poll_interval=10
 
@@ -46,7 +46,7 @@ oc apply -f $postgres_load_from_backup
 # Wait for Pod to be Completed
 db_reset_status=$(oc get po -n postgres-db | grep db-reset | awk '{print $3}')
 total_wait_time=0
-max_wait_time=600
+max_wait_time=3000
 until [[ $db_reset_status = "Completed" ]]
 do
   if (( total_wait_time > max_wait_time )); then

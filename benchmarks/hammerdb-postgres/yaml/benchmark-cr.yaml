@@ -33,7 +33,7 @@ spec:
       db_user: "postgres"
       db_pass: "postgres"
       db_name: "tpcc"
-      transactions: 250000
+      transactions: 400000
       raiseerror: "false"
       keyandthink: "false"
       driver: "timed"

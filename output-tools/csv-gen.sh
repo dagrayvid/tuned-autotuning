@@ -1,14 +1,12 @@
-search_dir=results/
+search_dir=$1
 
 #header:
-echo "iteration1,iteration2,iteration3,iteration4,$(cat results/220319140844-tuned.yaml | grep '=[0-9]\+' | awk -F= 'NF--' | awk '{$1=$1};1' | paste -sd,)"
+echo "trial name, tunable, results1, results2, results3,  min, pressure, max"
 
-for f in $search_dir/*-hammerdb.log
+for f in $search_dir/*
 do
-    hammerdb_file=$(basename $f)
-    tuned_yaml="${hammerdb_file:0:12}-tuned.yaml"
-    tunable_vals=$(cat $search_dir/$tuned_yaml | grep -o '=[0-9]\+' | cut -c2-  | paste -sd,)
-    hammerdb_results=$(cat $search_dir/$hammerdb_file | grep "NOPM:" | awk '{print $2}' | paste -sd,)
-    echo "$hammerdb_results,$tunable_vals"
-    #cat $f | grep "NOPM:" | awk '{print $2}' | paste -sd,
+    trial_name=$(basename $f | cut -d '-' -f2,3 | sed 's/-/,/g')
+    tunables=$(cat "$f/tuned.yaml" | grep -o '\S*=[0-9].*$' | sed 's/=/,/;s/   /,/g' | sed -z 's/\n/,/g;s/,$/\n/')
+    results=$(cat $f/result.csv)
+    echo "$trial_name,$results,$tunables"
 done

@@ -25,7 +25,7 @@ spec:
       timed_test: true
       test_type: "tpc-c"
       db_init: true # true only for first run to build schema
-      db_benchmark: false
+      db_benchmark: true
       db_server: "postgres-deployment.postgres-db"
       db_port: "5432"
       db_warehouses: 2048
@@ -33,7 +33,7 @@ spec:
       db_user: "postgres"
       db_pass: "postgres"
       db_name: "tpcc"
-      transactions: 300000
+      transactions: 400000
       raiseerror: "false"
       keyandthink: "false"
       driver: "timed"

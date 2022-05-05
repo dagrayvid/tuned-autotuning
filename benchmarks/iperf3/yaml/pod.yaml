@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pts-1cpu
+  labels:
+    app: pts
+spec:
+  containers:
+  - image: quay.io/openshift-psap/pts:amd64.net
+    command:
+      ### Use a wrapper to run the Phoronix Test Suite.
+      - /usr/local/bin/pts.sh
+      ### Replace by the test you want to run.  If no parameters, sleep.
+      - local/net
+    name: pts
+    imagePullPolicy: Always
+    resources:
+      requests:
+        cpu: 2
+        memory: "4Gi"
+    securityContext:
+     privileged: true
+  ### You may want to run the test suite on a selected (set of) node(s).
+  nodeSelector:
+    iperf3-sut: ""
+  restartPolicy: Never

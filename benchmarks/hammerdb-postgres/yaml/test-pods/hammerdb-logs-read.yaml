@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logs-check
+  namespace: benchmark-operator
+spec:
+  nodeSelector:
+    hammerdb-sut: "client"
+  containers:
+  - name: logs-check
+    image: registry.redhat.io/ubi8/ubi:latest
+    command: ["/bin/bash", "-c", "sleep infinity"] #"rm -rf /var/lib/pgsql/data/userdata-save || true; cp -a /var/lib/pgsql/data/userdata /var/lib/pgsql/data/userdata-save"]
+    volumeMounts:
+    - name: hammerdb-logs
+      mountPath: /var/logs/hammerdb-logs
+      readOnly: false
+    - mountPath: /dev/shm
+      name: dshm
+  restartPolicy: Never
+  volumes:
+  - name: hammerdb-logs
+    persistentVolumeClaim:
+      claimName: hammerdb-logs-pvc
+  - name: dshm
+    emptyDir:
+      medium: Memory
